@@ -8,9 +8,9 @@ export default function ViewTicketModal({ isOpen, onClose, ticket }) {
 
   return (
     <div className={`fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center ${isOpen ? '' : 'hidden'}`}>
-      <div className="bg-white p-6 rounded shadow-lg w-1/2 max-h-[90vh] overflow-y-auto">
+      <div className="bg-white p-6 rounded shadow-lg w-full max-w-2xl max-h-[90vh] overflow-y-auto">
         <div className="mb-4">
-          <h2 className="text-xl font-bold">Ticket Details</h2>
+          <h2 className="text-xl font-bold text-[#7C7CF8]">Ticket Details</h2>
         </div>
         <div className="space-y-4">
           {/* Ticket Title */}
@@ -135,7 +135,7 @@ export default function ViewTicketModal({ isOpen, onClose, ticket }) {
         {/* Close Button */}
         <div className="mt-4">
           <button
-            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700"
+            className="bg-[#7C7CF8] text-white px-4 py-2 rounded hover:bg-[#6b6bf0]"
             onClick={onClose}
           >
             Close

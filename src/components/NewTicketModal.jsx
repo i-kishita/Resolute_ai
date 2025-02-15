@@ -27,7 +27,7 @@ export default function NewTicketModal({ isOpen, onClose, onTicketCreated }) {
       <div className="relative min-h-screen flex items-center justify-center p-4">
         <div className="relative bg-white rounded-lg shadow-xl max-w-2xl w-full p-6">
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-bold">Create New Ticket</h2>
+            <h2 className="text-xl font-bold text-[#7C7CF8]">Create New Ticket</h2>
             <button
               onClick={onClose}
               className="text-gray-400 hover:text-gray-500 focus:outline-none"

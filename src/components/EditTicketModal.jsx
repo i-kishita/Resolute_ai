@@ -65,7 +65,7 @@ export default function EditTicketModal({ isOpen, onClose, ticket, onTicketUpdat
     <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex justify-center items-center">
       <div className="bg-white p-8 rounded-lg shadow-xl w-full max-w-2xl">
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-xl font-bold">Edit Ticket</h2>
+          <h2 className="text-xl font-bold text-[#7C7CF8]">Edit Ticket</h2>
           <button onClick={onClose} className="text-gray-500 hover:text-gray-700">×</button>
         </div>
 
@@ -100,7 +100,7 @@ export default function EditTicketModal({ isOpen, onClose, ticket, onTicketUpdat
             <button
               type="submit"
               disabled={loading}
-              className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:opacity-50"
+              className="px-4 py-2 bg-[#7C7CF8] text-white rounded hover:bg-[#6b6bf0] disabled:opacity-50"
             >
               {loading ? 'Updating...' : 'Update Ticket'}
             </button>

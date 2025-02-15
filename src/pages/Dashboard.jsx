@@ -120,49 +120,51 @@ export default function Dashboard() {
   );
 
   return (
-    <div className="flex">
+    <div className="flex flex-col md:flex-row min-h-screen">
       <Sidebar logout={logout} /> {/* Add Sidebar component */}
-      <div className="p-6 flex-1">
+      <div className="p-6 flex-1 overflow-hidden">
         <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold">Support Tickets</h1>
+          <h1 className="text-2xl font-bold text-[#7C7CF8]">Support Tickets</h1>
           {userRole === 'customer' && (
             <button
               onClick={() => setIsNewOpen(true)}
-              className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg shadow-md flex items-center"
+              className="bg-[#7C7CF8] hover:bg-[#6b6bf0] text-white font-bold py-2 px-4 rounded-lg shadow-md flex items-center"
             >
               <span className="mr-2">+</span>
               Create New Ticket
             </button>
           )}
         </div>
-
-        <table className="min-w-full bg-white">
-          <thead>
-            <tr>
-              {columns.map((column) => (
-                <th key={column.key} className="py-2 px-4 border-b border-gray-200">{column.label}</th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {tickets.map((ticket) => (
-              <tr key={ticket.id}>
-                <td className="py-2 px-4 border-b border-gray-200">{ticket.id}</td>
-                <td className="py-2 px-4 border-b border-gray-200">{ticket.title}</td>
-                <td className="py-2 px-4 border-b border-gray-200">{ticket.priority}</td>
-                <td className="py-2 px-4 border-b border-gray-200">{ticket.status}</td>
-                <td className="py-2 px-4 border-b border-gray-200">{ticket.createdByEmail}</td>
-                <td className="py-2 px-4 border-b border-gray-200">{ticket.assignedToEmail || 'Unassigned'}</td>
-                <td className="py-2 px-4 border-b border-gray-200">{ticket.preferredContact}</td>
-                <td className="py-2 px-4 border-b border-gray-200">{ticket.expectedResolutionDate}</td>
-                <td className="py-2 px-4 border-b border-gray-200">{ticket.departmentAffected}</td>
-                <td className="py-2 px-4 border-b border-gray-200">
-                  {renderActions(ticket)}
-                </td>
+        
+        <div className="overflow-x-auto rounded-lg shadow">
+          <table className="min-w-full bg-white">
+            <thead>
+              <tr>
+                {columns.map((column) => (
+                  <th key={column.key} className="py-2 px-4 border-b border-gray-200">{column.label}</th>
+                ))}
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {tickets.map((ticket) => (
+                <tr key={ticket.id}>
+                  <td className="py-2 px-4 border-b border-gray-200">{ticket.id}</td>
+                  <td className="py-2 px-4 border-b border-gray-200">{ticket.title}</td>
+                  <td className="py-2 px-4 border-b border-gray-200">{ticket.priority}</td>
+                  <td className="py-2 px-4 border-b border-gray-200">{ticket.status}</td>
+                  <td className="py-2 px-4 border-b border-gray-200">{ticket.createdByEmail}</td>
+                  <td className="py-2 px-4 border-b border-gray-200">{ticket.assignedToEmail || 'Unassigned'}</td>
+                  <td className="py-2 px-4 border-b border-gray-200">{ticket.preferredContact}</td>
+                  <td className="py-2 px-4 border-b border-gray-200">{ticket.expectedResolutionDate}</td>
+                  <td className="py-2 px-4 border-b border-gray-200">{ticket.departmentAffected}</td>
+                  <td className="py-2 px-4 border-b border-gray-200">
+                    {renderActions(ticket)}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
 
         {isNewOpen && (
           <NewTicketModal

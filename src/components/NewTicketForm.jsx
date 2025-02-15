@@ -181,7 +181,7 @@ export default function NewTicketForm({ onClose, onTicketCreated }) {
         <button
           type="submit"
           disabled={loading}
-          className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded disabled:opacity-50"
+          className="bg-[#7C7CF8] hover:bg-[#6b6bf0] text-white font-bold py-2 px-4 rounded disabled:opacity-50"
         >
           {loading ? 'Creating...' : 'Create Ticket'}
         </button>

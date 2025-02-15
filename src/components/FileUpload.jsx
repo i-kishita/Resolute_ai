@@ -82,11 +82,11 @@ const FileUpload = ({ onFileUploaded, maxSizeInMB = 5 }) => {
           type="file"
           onChange={handleFileUpload}
           disabled={uploading}
-          className="w-full px-3 py-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full px-3 py-2 border rounded focus:ring-2 focus:ring-[#7C7CF8] focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
         />
         {uploading && (
           <div className="absolute inset-0 bg-white bg-opacity-50 flex items-center justify-center">
-            <div className="animate-pulse text-blue-500">Uploading...</div>
+            <div className="animate-pulse text-[#7C7CF8]">Uploading...</div>
           </div>
         )}
       </div>

@@ -125,7 +125,7 @@ const TicketForm = ({ onSubmit }) => {
 
       <button
         type="submit"
-        className="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+        className="w-full bg-[#7C7CF8] text-white py-2 px-4 rounded hover:bg-[#6b6bf0] focus:outline-none focus:ring-2 focus:ring-[#7C7CF8] focus:ring-offset-2"
       >
         Submit
       </button>
