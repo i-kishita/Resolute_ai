@@ -88,112 +88,125 @@ export default function Signup() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
-      <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
-        <h2 className="text-2xl font-bold mb-6 text-center">Create Account</h2>
-        
-        {error && (
-          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-            {error}
-          </div>
-        )}
+    <div className="h-screen flex items-center justify-center bg-gray-50 px-4">
+      <div className="w-full max-w-6xl bg-white rounded-2xl shadow-xl flex">
+        <div className="w-1/2 hidden md:block">
+          <img
+            src="/auth.jpg"
+            alt="Signup"
+            className="object-contain w-full h-full rounded-l-lg"
+          />
+        </div>
+        <div className="w-full md:w-1/2 p-8">
+          <h2 className="text-3xl font-semibold mb-6 text-center text-gray-800">Create Account</h2>
+          
+          {error && (
+            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+              {error}
+            </div>
+          )}
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="grid grid-cols-2 gap-4">
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-gray-700 text-sm font-medium mb-2">First Name</label>
+                <input
+                  type="text"
+                  className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-[#7C7CF8]"
+                  value={formData.firstName}
+                  onChange={(e) => handleInputChange('firstName', e.target.value)}
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-gray-700 text-sm font-medium mb-2">Last Name</label>
+                <input
+                  type="text"
+                  className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-[#7C7CF8]"
+                  value={formData.lastName}
+                  onChange={(e) => handleInputChange('lastName', e.target.value)}
+                  required
+                />
+              </div>
+            </div>
+
             <div>
-              <label className="block text-gray-700 text-sm font-bold mb-2">First Name</label>
+              <label className="block text-gray-700 text-sm font-medium mb-2">Email</label>
               <input
-                type="text"
-                className="w-full px-3 py-2 border rounded"
-                value={formData.firstName}
-                onChange={(e) => handleInputChange('firstName', e.target.value)}
+                type="email"
+                className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-[#7C7CF8]"
+                value={formData.email}
+                onChange={(e) => handleInputChange('email', e.target.value)}
                 required
               />
             </div>
+
             <div>
-              <label className="block text-gray-700 text-sm font-bold mb-2">Last Name</label>
+              <label className="block text-gray-700 text-sm font-medium mb-2">Password</label>
               <input
-                type="text"
-                className="w-full px-3 py-2 border rounded"
-                value={formData.lastName}
-                onChange={(e) => handleInputChange('lastName', e.target.value)}
+                type="password"
+                className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-[#7C7CF8]"
+                value={formData.password}
+                onChange={(e) => handleInputChange('password', e.target.value)}
                 required
               />
             </div>
-          </div>
 
-          <div>
-            <label className="block text-gray-700 text-sm font-bold mb-2">Email</label>
-            <input
-              type="email"
-              className="w-full px-3 py-2 border rounded"
-              value={formData.email}
-              onChange={(e) => handleInputChange('email', e.target.value)}
-              required
-            />
-          </div>
+            <div>
+              <label className="block text-gray-700 text-sm font-medium mb-2">Confirm Password</label>
+              <input
+                type="password"
+                className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-[#7C7CF8]"
+                value={formData.confirmPassword}
+                onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
+                required
+              />
+            </div>
 
-          <div>
-            <label className="block text-gray-700 text-sm font-bold mb-2">Password</label>
-            <input
-              type="password"
-              className="w-full px-3 py-2 border rounded"
-              value={formData.password}
-              onChange={(e) => handleInputChange('password', e.target.value)}
-              required
-            />
-          </div>
+            <div>
+              <label className="block text-gray-700 text-sm font-medium mb-2">Phone Number</label>
+              <input
+                type="tel"
+                className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-[#7C7CF8]"
+                value={formData.phoneNumber}
+                onChange={(e) => handleInputChange('phoneNumber', e.target.value)}
+                required
+              />
+            </div>
 
-          <div>
-            <label className="block text-gray-700 text-sm font-bold mb-2">Confirm Password</label>
-            <input
-              type="password"
-              className="w-full px-3 py-2 border rounded"
-              value={formData.confirmPassword}
-              onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
-              required
-            />
-          </div>
+            <div>
+              <label className="block text-gray-700 text-sm font-medium mb-2">Account Type</label>
+              <select
+                className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-[#7C7CF8]"
+                value={formData.role}
+                onChange={(e) => handleInputChange('role', e.target.value)}
+              >
+                <option value="customer">Customer</option>
+                <option value="agent">Support Agent</option>
+              </select>
+            </div>
 
-          <div>
-            <label className="block text-gray-700 text-sm font-bold mb-2">Phone Number</label>
-            <input
-              type="tel"
-              className="w-full px-3 py-2 border rounded"
-              value={formData.phoneNumber}
-              onChange={(e) => handleInputChange('phoneNumber', e.target.value)}
-              required
-            />
-          </div>
-
-          <div>
-            <label className="block text-gray-700 text-sm font-bold mb-2">Account Type</label>
-            <select
-              className="w-full px-3 py-2 border rounded"
-              value={formData.role}
-              onChange={(e) => handleInputChange('role', e.target.value)}
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full bg-[#7C7CF8] text-white py-2 px-4 rounded hover:bg-[#6b6bf0] disabled:opacity-50"
             >
-              <option value="customer">Customer</option>
-              <option value="agent">Support Agent</option>
-            </select>
+              {loading ? 'Creating Account...' : 'Sign Up'}
+            </button>
+          </form>
+
+          <div className="mt-4 text-center">
+            <p className="text-sm text-gray-600">
+              Already have an account?{' '}
+              <Link to="/login" className="text-[#7C7CF8] hover:text-[#6b6bf0]">
+                Log in
+              </Link>
+            </p>
           </div>
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 disabled:opacity-50"
-          >
-            {loading ? 'Creating Account...' : 'Sign Up'}
-          </button>
-        </form>
-
-        <div className="mt-4 text-center">
-          <p className="text-sm text-gray-600">
-            Already have an account?{' '}
-            <Link to="/login" className="text-blue-500 hover:text-blue-700">
-              Log in
-            </Link>
-          </p>
+          <div className="mt-8 text-center text-gray-600">
+            <p>Get started with Resolute. Create an account now!</p>
+          </div>
         </div>
       </div>
     </div>
