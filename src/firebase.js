@@ -42,7 +42,11 @@ export const auth = getAuth(app);
 export const db = getFirestore(app);
 export const storage = getStorage(app);
 
+// Remove the problematic CORS fetch
+// The CORS configuration will be handled through Firebase Console and gsutil
+
 // Optional: Add development logging
 if (import.meta.env.DEV) {
   console.log('Firebase initialized successfully');
+  console.log('Storage Bucket:', firebaseConfig.storageBucket); // Add this line temporarily
 }

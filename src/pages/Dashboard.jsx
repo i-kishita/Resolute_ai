@@ -32,10 +32,10 @@ export default function Dashboard() {
     try {
       let ticketsQuery;
       if (userRole === 'customer') {
+        // Simple query without ordering
         ticketsQuery = query(
           collection(db, 'tickets'),
-          where('createdBy', '==', currentUser.uid),
-          orderBy('createdAt', 'desc')
+          where('createdBy', '==', currentUser.uid)
         );
       } else {
         ticketsQuery = query(
@@ -84,13 +84,48 @@ export default function Dashboard() {
     { key: 'actions', label: 'Actions' }
   ];
 
+  const renderActions = (ticket) => (
+    <div className="flex gap-2">
+      <button
+        className="text-blue-500"
+        onClick={() => {
+          setSelectedTicket(ticket);
+          setIsViewOpen(true);
+        }}
+      >
+        <Eye size={20} />
+      </button>
+      
+      {(userRole === 'agent' || ticket.createdBy === currentUser?.uid) && (
+        <button
+          className="text-yellow-500"
+          onClick={() => {
+            setSelectedTicket(ticket);
+            setIsEditOpen(true);
+          }}
+        >
+          <Edit2 size={20} />
+        </button>
+      )}
+      
+      {(userRole === 'customer' && ticket.createdBy === currentUser?.uid) && (
+        <button
+          className="text-red-500"
+          onClick={() => handleDelete(ticket.id)}
+        >
+          <Trash size={20} />
+        </button>
+      )}
+    </div>
+  );
+
   return (
     <div className="flex">
       <Sidebar logout={logout} /> {/* Add Sidebar component */}
       <div className="p-6 flex-1">
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-2xl font-bold">Support Tickets</h1>
-          {/* {userRole === 'customer' && ( */}
+          {userRole === 'customer' && (
             <button
               onClick={() => setIsNewOpen(true)}
               className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg shadow-md flex items-center"
@@ -98,7 +133,7 @@ export default function Dashboard() {
               <span className="mr-2">+</span>
               Create New Ticket
             </button>
-          {/* )} */}
+          )}
         </div>
 
         <table className="min-w-full bg-white">
@@ -122,37 +157,7 @@ export default function Dashboard() {
                 <td className="py-2 px-4 border-b border-gray-200">{ticket.expectedResolutionDate}</td>
                 <td className="py-2 px-4 border-b border-gray-200">{ticket.departmentAffected}</td>
                 <td className="py-2 px-4 border-b border-gray-200">
-                  <div className="flex gap-2">
-                    <button
-                      className="text-blue-500"
-                      onClick={() => {
-                        setSelectedTicket(ticket);
-                        setIsViewOpen(true);
-                      }}
-                    >
-                      <Eye size={20} />
-                    </button>
-                    {/* {(userRole === 'agent' || 
-                      (userRole === 'customer' && ticket.createdBy === currentUser.uid)) && ( */}
-                      <button
-                        className="text-yellow-500"
-                        onClick={() => {
-                          setSelectedTicket(ticket);
-                          setIsEditOpen(true);
-                        }}
-                      >
-                        <Edit2 size={20} />
-                      </button>
-                    {/* )} */}
-                    {/* {userRole === 'customer' && ticket.createdBy === currentUser.uid && ( */}
-                      <button
-                        className="text-red-500"
-                        onClick={() => handleDelete(ticket.id)}
-                      >
-                        <Trash size={20} />
-                      </button>
-                    {/* )} */}
-                  </div>
+                  {renderActions(ticket)}
                 </td>
               </tr>
             ))}

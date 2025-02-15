@@ -1,7 +1,7 @@
 // src/components/EditTicketModal.jsx
 import { useState, useEffect } from 'react';
 import { db } from '../firebase';
-import { doc, updateDoc } from 'firebase/firestore';
+import { doc, updateDoc, Timestamp } from 'firebase/firestore';
 import { useAuth } from '../contexts/AuthContext';
 
 export default function EditTicketModal({ isOpen, onClose, ticket, onTicketUpdated }) {
@@ -42,11 +42,19 @@ export default function EditTicketModal({ isOpen, onClose, ticket, onTicketUpdat
     try {
       setLoading(true);
       const ticketRef = doc(db, 'tickets', ticket.id);
-      await updateDoc(ticketRef, formData);
+      
+      const updateData = {
+        ...formData,
+        updatedAt: Timestamp.now(),
+        updatedBy: userRole
+      };
+
+      await updateDoc(ticketRef, updateData);
       onTicketUpdated();
       onClose();
     } catch (error) {
       console.error('Error updating ticket:', error);
+      alert('Failed to update ticket. Please try again.');
     } finally {
       setLoading(false);
     }

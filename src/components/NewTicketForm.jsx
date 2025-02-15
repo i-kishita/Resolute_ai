@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { db } from '../firebase';
 import { collection, addDoc, Timestamp } from 'firebase/firestore';
 import { useAuth } from '../contexts/AuthContext';
+import FileUpload from './FileUpload';
 
 export default function NewTicketForm({ onClose, onTicketCreated }) {
   const { currentUser } = useAuth();
@@ -10,23 +11,25 @@ export default function NewTicketForm({ onClose, onTicketCreated }) {
   const [description, setDescription] = useState('');
   const [priority, setPriority] = useState('Low');
   const [category, setCategory] = useState('');
-  const [attachment, setAttachment] = useState(null);
   const [contactEmail, setContactEmail] = useState('');
   const [contactPhone, setContactPhone] = useState('');
   const [preferredContact, setPreferredContact] = useState('email');
   const [expectedResolutionDate, setExpectedResolutionDate] = useState('');
   const [departmentAffected, setDepartmentAffected] = useState('');
+  const [fileData, setFileData] = useState(null);
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       setLoading(true);
+  
       const ticketData = {
         title,
         description,
         priority,
         category,
-        attachment,
+        attachment: fileData, // Use the fileData object
         contactEmail,
         contactPhone,
         preferredContact,
@@ -35,11 +38,12 @@ export default function NewTicketForm({ onClose, onTicketCreated }) {
         status: 'new',
         createdBy: currentUser.uid,
         createdByEmail: currentUser.email,
-        createdAt: Timestamp.now()
+        createdAt: Timestamp.now(),
       };
-
+  
       await addDoc(collection(db, 'tickets'), ticketData);
       onTicketCreated();
+      onClose();
     } catch (error) {
       console.error('Error creating ticket:', error);
       alert('Failed to create ticket. Please try again.');
@@ -93,13 +97,16 @@ export default function NewTicketForm({ onClose, onTicketCreated }) {
         />
       </div>
       <div>
-        <label className="block text-gray-700">Attachment</label>
-        <input
-          type="file"
-          className="w-full px-3 py-2 border rounded"
-          onChange={(e) => setAttachment(e.target.files[0])}
-        />
-      </div>
+  <label className="block text-gray-700">Attachment</label>
+  <FileUpload
+    onFileUploaded={(data) => setFileData(data)}
+  />
+  {fileData && (
+    <p className="text-sm text-gray-600 mt-1">
+      File selected: {fileData.originalName}
+    </p>
+  )}
+</div>
       <div>
         <label className="block text-gray-700">Contact Email</label>
         <input
