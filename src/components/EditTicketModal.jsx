@@ -44,7 +44,8 @@ export default function EditTicketModal({ isOpen, onClose, ticket, onTicketUpdat
       const ticketRef = doc(db, 'tickets', ticket.id);
       
       const updateData = {
-        ...formData,
+        title: formData.title,
+        description: formData.description,
         updatedAt: Timestamp.now(),
         updatedBy: userRole
       };
@@ -76,7 +77,6 @@ export default function EditTicketModal({ isOpen, onClose, ticket, onTicketUpdat
               className="w-full px-3 py-2 border rounded"
               value={formData.title}
               onChange={(e) => handleInputChange('title', e.target.value)}
-              disabled={userRole !== 'agent'}
             />
           </div>
 
@@ -86,38 +86,8 @@ export default function EditTicketModal({ isOpen, onClose, ticket, onTicketUpdat
               className="w-full px-3 py-2 border rounded"
               value={formData.description}
               onChange={(e) => handleInputChange('description', e.target.value)}
-              disabled={userRole !== 'agent'}
             />
           </div>
-
-          <div>
-            <label className="block text-gray-700 text-sm font-bold mb-2">Status</label>
-            <select
-              className="w-full px-3 py-2 border rounded"
-              value={formData.status}
-              onChange={(e) => handleInputChange('status', e.target.value)}
-              disabled={userRole !== 'agent'}
-            >
-              <option value="new">New</option>
-              <option value="in_progress">In Progress</option>
-              <option value="pending">Pending</option>
-              <option value="resolved">Resolved</option>
-              <option value="closed">Closed</option>
-            </select>
-          </div>
-
-          {userRole === 'agent' && (
-            <div>
-              <label className="block text-gray-700 text-sm font-bold mb-2">Assign To (Email)</label>
-              <input
-                type="email"
-                className="w-full px-3 py-2 border rounded"
-                value={formData.assignedToEmail}
-                onChange={(e) => handleInputChange('assignedToEmail', e.target.value)}
-                placeholder="Enter agent email"
-              />
-            </div>
-          )}
 
           <div className="flex justify-end space-x-2">
             <button

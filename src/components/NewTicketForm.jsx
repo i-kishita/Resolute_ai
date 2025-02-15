@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { db } from '../firebase';
 import { collection, addDoc, Timestamp } from 'firebase/firestore';
 import { useAuth } from '../contexts/AuthContext';
-import FileUpload from './FileUpload';
 
 export default function NewTicketForm({ onClose, onTicketCreated }) {
   const { currentUser } = useAuth();
@@ -16,20 +15,19 @@ export default function NewTicketForm({ onClose, onTicketCreated }) {
   const [preferredContact, setPreferredContact] = useState('email');
   const [expectedResolutionDate, setExpectedResolutionDate] = useState('');
   const [departmentAffected, setDepartmentAffected] = useState('');
-  const [fileData, setFileData] = useState(null);
-
+  const [fileUrl, setFileUrl] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       setLoading(true);
-  
+
       const ticketData = {
         title,
         description,
         priority,
         category,
-        attachment: fileData, // Use the fileData object
+        attachment: fileUrl ? { url: fileUrl } : null, // Store file URL if provided
         contactEmail,
         contactPhone,
         preferredContact,
@@ -40,7 +38,7 @@ export default function NewTicketForm({ onClose, onTicketCreated }) {
         createdByEmail: currentUser.email,
         createdAt: Timestamp.now(),
       };
-  
+
       await addDoc(collection(db, 'tickets'), ticketData);
       onTicketCreated();
       onClose();
@@ -97,16 +95,14 @@ export default function NewTicketForm({ onClose, onTicketCreated }) {
         />
       </div>
       <div>
-  <label className="block text-gray-700">Attachment</label>
-  <FileUpload
-    onFileUploaded={(data) => setFileData(data)}
-  />
-  {fileData && (
-    <p className="text-sm text-gray-600 mt-1">
-      File selected: {fileData.originalName}
-    </p>
-  )}
-</div>
+        <label className="block text-gray-700">Attachment URL (optional)</label>
+        <input
+          type="url"
+          className="w-full px-3 py-2 border rounded"
+          value={fileUrl}
+          onChange={(e) => setFileUrl(e.target.value)}
+        />
+      </div>
       <div>
         <label className="block text-gray-700">Contact Email</label>
         <input

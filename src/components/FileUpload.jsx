@@ -4,15 +4,56 @@ const FileUpload = ({ onFileUploaded, maxSizeInMB = 5 }) => {
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState('');
 
+  // Function to store file in IndexedDB
+  const storeFileInIndexedDB = async (file) => {
+    return new Promise((resolve, reject) => {
+      const request = indexedDB.open('FileStorageDB', 1);
+
+      request.onupgradeneeded = (event) => {
+        const db = event.target.result;
+        if (!db.objectStoreNames.contains('files')) {
+          db.createObjectStore('files', { keyPath: 'id' });
+        }
+      };
+
+      request.onsuccess = (event) => {
+        const db = event.target.result;
+        const transaction = db.transaction('files', 'readwrite');
+        const store = transaction.objectStore('files');
+
+        const fileData = {
+          id: `${Date.now()}-${Math.random().toString(36).substring(2, 15)}`,
+          name: file.name,
+          type: file.type,
+          size: file.size,
+          file, // Store the file as a Blob
+        };
+
+        const addRequest = store.add(fileData);
+
+        addRequest.onsuccess = () => {
+          resolve(fileData);
+        };
+
+        addRequest.onerror = () => {
+          reject(new Error('Failed to store file in IndexedDB'));
+        };
+      };
+
+      request.onerror = () => {
+        reject(new Error('Failed to open IndexedDB'));
+      };
+    });
+  };
+
   const handleFileUpload = async (event) => {
     const file = event.target.files[0];
     if (!file) return;
 
-    // Reset error state
     setError('');
 
     // Validate file size
-    const maxSize = maxSizeInMB * 1024 * 1024; // Convert MB to bytes
+    const maxSize = maxSizeInMB * 1024 * 1024;
     if (file.size > maxSize) {
       setError(`File size must be less than ${maxSizeInMB}MB`);
       return;
@@ -21,27 +62,14 @@ const FileUpload = ({ onFileUploaded, maxSizeInMB = 5 }) => {
     try {
       setUploading(true);
 
-      // Create a unique filename
-      const fileExtension = file.name.split('.').pop();
-      const uniqueFileName = `${Date.now()}-${Math.random().toString(36).substring(2, 15)}.${fileExtension}`;
+      // Store the file in IndexedDB
+      const fileData = await storeFileInIndexedDB(file);
 
-      // Create object URL for the file
-      const objectUrl = URL.createObjectURL(file);
-
-      // Create the file metadata object
-      const fileData = {
-        url: objectUrl,
-        name: uniqueFileName,
-        originalName: file.name,
-        type: file.type,
-        size: file.size
-      };
-
-      // Call the callback with the file data
+      // Pass file metadata to the parent component
       onFileUploaded(fileData);
     } catch (error) {
-      console.error('File processing error:', error);
-      setError('Failed to process file. Please try again.');
+      console.error('File upload error:', error);
+      setError('Failed to upload file. Please try again.');
     } finally {
       setUploading(false);
     }
@@ -58,13 +86,11 @@ const FileUpload = ({ onFileUploaded, maxSizeInMB = 5 }) => {
         />
         {uploading && (
           <div className="absolute inset-0 bg-white bg-opacity-50 flex items-center justify-center">
-            <div className="animate-pulse text-blue-500">Processing...</div>
+            <div className="animate-pulse text-blue-500">Uploading...</div>
           </div>
         )}
       </div>
-      {error && (
-        <p className="text-sm text-red-500">{error}</p>
-      )}
+      {error && <p className="text-sm text-red-500">{error}</p>}
     </div>
   );
 };
