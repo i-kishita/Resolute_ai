@@ -69,7 +69,7 @@ export default function Login() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              className="w-full bg-[#7C7CF8] hover:bg-[#6b6bf0] text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
             >
               {loading ? 'Logging in...' : 'Login'}
             </button>
@@ -78,7 +78,7 @@ export default function Login() {
           <div className="mt-4 text-center">
             <p className="text-sm text-gray-600">
               Don&apos;t have an account?{' '}
-              <Link to="/signup" className="text-blue-500 hover:text-blue-700">
+              <Link to="/signup" className="text-[#7C7CF8] hover:text-[#7C7CF8]">
                 Sign up
               </Link>
             </p>
